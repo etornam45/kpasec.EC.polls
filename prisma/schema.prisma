@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AcademicYear {
+  academicYearID Int         @id @default(autoincrement())
+  startYear      Int
+  endYear        Int
+  Positions      Positions[]
+  Votes          Votes[]
+  shortCodes     shortCode[]
+}
+
+model Positions {
+  positionID     Int          @id @default(autoincrement())
+  positionName   String
+  academicYearID Int
+  AcademicYear   AcademicYear @relation(fields: [academicYearID], references: [academicYearID])
+  Candidates     Candidates[]
+}
+
+model Candidates {
+  candidateID   Int       @id @default(autoincrement())
+  candidateName String
+  imageUrl      String
+  positionID    Int
+  Positions     Positions @relation(fields: [positionID], references: [positionID])
+  Votes         Votes[]
+}
+
+model Votes {
+  voteID         Int          @id @default(autoincrement())
+  candidateID    Int
+  academicYearID Int
+  studentCode    String
+  Candidates     Candidates   @relation(fields: [candidateID], references: [candidateID])
+  AcademicYear   AcademicYear @relation(fields: [academicYearID], references: [academicYearID])
+}
+
+model shortCode {
+  shortCodeID    Int          @id @default(autoincrement())
+  studentCode    String       @unique
+  academicYearID Int
+  AcademicYear   AcademicYear @relation(fields: [academicYearID], references: [academicYearID])
+}

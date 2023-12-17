@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+	box-sizing: border-box;
+	@apply !rounded-none;
+}
+
+@layer components {
+	.container {
+		@apply mx-auto px-4;
+		max-width: 1000px;
+	}
+}
+input {
+	@apply dark:bg-gray-800 dark:text-white;
+}
